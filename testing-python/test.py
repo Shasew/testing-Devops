@@ -6,4 +6,3 @@ if __name__ == "__main__":
     result = handler({"name": "devops"})
     print(result)
 
-print("hello world")
