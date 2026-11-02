@@ -6,8 +6,6 @@ import sentry_sdk
 
 
 environment = os.getenv("SENTRY_ENVIRONMENT", "development")
-# This public demo DSN lets the sample run immediately. Set SENTRY_DSN to
-# override it with a different project key in another environment.
 sentry_dsn = os.getenv("SENTRY_DSN", "").strip() or (
     "https://c1ff93cca1739fd736f738e1773a8eb0"
     "@o4512332898304000.ingest.de.sentry.io/4512336908910672"
@@ -17,7 +15,6 @@ sentry_sdk.init(
     dsn=sentry_dsn,
     environment=environment,
     release=os.getenv("SENTRY_RELEASE"),
-    # Tune this for production traffic and your Sentry quota.
     traces_sample_rate=0.1 if environment == "production" else 1.0,
 )
 
@@ -26,7 +23,6 @@ def handler(event: dict[str, object]) -> dict[str, str]:
     """Handle a sample event and emit useful, searchable log attributes."""
     name = event.get("name", "work")
     if not isinstance(name, str):
-        # This is a recoverable input issue; log the type, not the raw value.
         sentry_sdk.logger.warning(
             "Rejected event with invalid name",
             attributes={"input_type": type(name).__name__},
@@ -44,8 +40,6 @@ def handler(event: dict[str, object]) -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    # Plain Python apps do not create transactions automatically. This makes
-    # the sample log trace-connected and demonstrates where app work belongs.
     with sentry_sdk.start_transaction(op="task", name="sample handler"):
         result = handler({"name": "devops"})
         print(result)
