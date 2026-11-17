@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -10,15 +11,19 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building Python application...'
-                sh 'python3 app.py'
+                dir('testing-python') {
+                    echo 'Building Python application...'
+                    sh 'python3 app.py'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                sh 'python3 -m compileall app.py'
+                dir('testing-python') {
+                    echo 'Running syntax check...'
+                    sh 'python3 -m compileall app.py'
+                }
             }
         }
     }
