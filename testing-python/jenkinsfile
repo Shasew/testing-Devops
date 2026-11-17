@@ -13,7 +13,7 @@ pipeline {
             steps {
                 dir('testing-python') {
                     echo 'Building Python application...'
-                    sh 'python3 app.py'
+                    sh 'python3 sentry_config.py'
                 }
             }
         }
@@ -22,7 +22,7 @@ pipeline {
             steps {
                 dir('testing-python') {
                     echo 'Running syntax check...'
-                    sh 'python3 -m compileall app.py'
+                    sh 'python3 -m compileall sentry_config.py'
                 }
             }
         }
